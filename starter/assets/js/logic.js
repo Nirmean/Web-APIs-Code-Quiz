@@ -6,6 +6,7 @@ const questionPage = document.querySelector("#questions");
 const questionTitle = document.querySelector("#question-title");
 const questionChoices = document.querySelector("#choices");
 const timerBtn = document.querySelector("#time");
+const endScreen = document.querySelector("#end-screen");
 let timerCount = 60;
 let intervalID;
 let question = questionList[0];
@@ -64,7 +65,9 @@ function nextQuestion() {
         // Handle end of quiz or other logic here
         clearInterval(intervalID);
         alert("Quiz is over. Your score: " + score);
+        endQuiz ();
 }
+
 }
 
 
@@ -84,3 +87,30 @@ function checkAnswer(event) {
     questionIndex++;
     nextQuestion();
 }
+
+function endQuiz() {
+    endScreen.classList.toggle("start");
+    endScreen.classList.toggle("hide");
+
+    endScreen.classList.toggle("hide");
+    endScreen.classList.toggle("start");
+    
+    questionPage.classList.add("hide");
+    endScreen.classList.remove("hide");
+    document.getElementById("final-score").textContent = score;
+}
+
+// Submit initials and handle completion
+submitBtn.addEventListener("click", function () {
+    const initials = document.getElementById("initials").value.trim();
+    
+    if (initials !== "") {
+        // Handle the submitted initials and score (you can customize this part)
+        alert(`Quiz completed! Your score: ${score}. Initials: ${initials}`);
+
+        // Optionally, you can redirect to a high scores page or perform other actions.
+        // Example: window.location.href = "highscores.html";
+    } else {
+        alert("Please enter your initials.");
+    }
+});
