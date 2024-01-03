@@ -7,12 +7,11 @@ const questionTitle = document.querySelector("#question-title");
 const questionChoices = document.querySelector("#choices");
 const timerBtn = document.querySelector("#time");
 const endScreen = document.querySelector("#end-screen");
+const submitBtn = document.querySelector("#submit");
 let timerCount = 60;
 let intervalID;
-let question = questionList[0];
 let questionIndex = 0;
 let score = 0;
-
 
 // function to start game, display first question + start timer
 startBtn.addEventListener("click", start);
@@ -31,16 +30,16 @@ function start() {
     nextQuestion();
 }
 
-function startTimer () {
+function startTimer() {
     intervalID = setInterval(timeRemaining, 1000);
 }
 
 function timeRemaining() {
     timerBtn.textContent = timerCount;
     if (timerCount > 0) {
-      timerCount--;
+        timerCount--;
     } else {
-      clearInterval(intervalID);
+        clearInterval(intervalID);
     }
 }
 
@@ -48,28 +47,26 @@ function timeRemaining() {
 function nextQuestion() {
     // Clear existing answer buttons
     questionChoices.innerHTML = "";
-    
+
     if (questionIndex < questionList.length) {
         let question = questionList[questionIndex];
         questionTitle.textContent = question.title;
 
-    // create buttons for answer choices
+        // create buttons for answer choices
         for (i = 0; i < question.choices.length; i++) {
             let answerBtn = document.createElement("button");
             answerBtn.textContent = question.choices[i];
             questionChoices.appendChild(answerBtn);
+
             // listen for answer buttons clicked.
             answerBtn.addEventListener("click", checkAnswer);
-    }
-} else {
+        }
+    } else {
         // Handle end of quiz or other logic here
         clearInterval(intervalID);
-        alert("Quiz is over. Your score: " + score);
-        endQuiz ();
+        endQuiz();
+    }
 }
-
-}
-
 
 // validate correct answer and move onto the next question
 function checkAnswer(event) {
@@ -94,22 +91,38 @@ function endQuiz() {
 
     endScreen.classList.toggle("hide");
     endScreen.classList.toggle("start");
-    
+
     questionPage.classList.add("hide");
     endScreen.classList.remove("hide");
     document.getElementById("final-score").textContent = score;
 }
 
 // Submit initials and handle completion
+function addHighscore(initials, score) {
+    const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+
+    const newScore = { initials: initials, score: score };
+    highscores.push(newScore);
+
+    // Sort high scores in descending order
+    highscores.sort((a, b) => b.score - a.score);
+
+    // Keep only the top 5 high scores
+    highscores.splice(5);
+
+    // Save high scores to localStorage
+    localStorage.setItem("highscores", JSON.stringify(highscores));
+}
+
 submitBtn.addEventListener("click", function () {
     const initials = document.getElementById("initials").value.trim();
-    
-    if (initials !== "") {
-        // Handle the submitted initials and score (you can customize this part)
-        alert(`Quiz completed! Your score: ${score}. Initials: ${initials}`);
 
-        // Optionally, you can redirect to a high scores page or perform other actions.
-        // Example: window.location.href = "highscores.html";
+    if (initials !== "") {
+        // Handle the submitted initials and score
+        addHighscore(initials, score);
+
+        // Redirect to highscores page
+        window.location.href = "highscores.html";
     } else {
         alert("Please enter your initials.");
     }
