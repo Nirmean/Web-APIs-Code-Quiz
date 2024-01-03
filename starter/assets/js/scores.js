@@ -1,46 +1,31 @@
+const clearButton = document.querySelector("#clear");
+
 document.addEventListener("DOMContentLoaded", function () {
-    const highscoresList = document.getElementById("highscores");
-    const clearButton = document.getElementById("clear");
-    // Load high scores from localStorage
-    const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
-
-    // Display high scores
+    // Display high scores on the "highscores.html" page
     renderHighscores();
-    // Event listener for the clear button
-    clearButton.addEventListener("click", function () {
-        // Clear high scores
-        localStorage.removeItem("highscores");
-        // Refresh the displayed high scores
-        renderHighscores();
-    });
-
-    // Function to render high scores on the page
-    function renderHighscores() {
-        highscoresList.innerHTML = ""; // Clear existing list
-
-        // Loop through high scores and add them to the list
-        for (let i = 0; i < highscores.length; i++) {
-            const scoreEntry = document.createElement("li");
-            scoreEntry.textContent = `${highscores[i].initials} - ${highscores[i].score}`;
-            highscoresList.appendChild(scoreEntry);
-        }
-    }
-
-    // Function to add a new high score
-    function addHighscore(initials, score) {
-        const newScore = { initials: initials, score: score };
-        highscores.push(newScore);
-
-        // Sort high scores in descending order
-        highscores.sort((a, b) => b.score - a.score);
-
-        // Keep only the top 5 high scores
-        highscores.splice(5);
-
-        // Save high scores to localStorage
-        localStorage.setItem("highscores", JSON.stringify(highscores));
-
-        // Refresh the displayed high scores
-        renderHighscores();
-    }
 });
+
+// Function to render high scores on the page
+function renderHighscores() {
+    const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
+    const highscoresList = document.getElementById("highscores");
+
+    // Clear existing high scores
+    highscoresList.innerHTML = "";
+
+    // Append each high score to the list
+    highscores.forEach((score, index) => {
+        const listItem = document.createElement("li");
+        listItem.textContent = `${index + 1}. ${score.initials}: ${score.score}`;
+        highscoresList.appendChild(listItem);
+    });
+}
+
+// Function to clear high scores from localStorage
+function clearHighscores() {
+    localStorage.removeItem("highscores");
+    renderHighscores(); // Assuming you have a function to render high scores on the page
+}
+
+// Event listener for the clear button
+clearButton.addEventListener("click", clearHighscores);

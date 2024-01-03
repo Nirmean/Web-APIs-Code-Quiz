@@ -97,6 +97,20 @@ function endQuiz() {
     document.getElementById("final-score").textContent = score;
 }
 
+submitBtn.addEventListener("click", function () {
+    const initials = document.getElementById("initials").value.trim();
+
+    if (initials !== "") {
+        // Handle the submitted initials and score
+        addHighscore(initials, score);
+
+        // Redirect to highscores page
+        window.location.href = "highscores.html";
+    } else {
+        alert("Please enter your initials.");
+    }
+});
+
 // Submit initials and handle completion
 function addHighscore(initials, score) {
     const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
@@ -113,17 +127,3 @@ function addHighscore(initials, score) {
     // Save high scores to localStorage
     localStorage.setItem("highscores", JSON.stringify(highscores));
 }
-
-submitBtn.addEventListener("click", function () {
-    const initials = document.getElementById("initials").value.trim();
-
-    if (initials !== "") {
-        // Handle the submitted initials and score
-        addHighscore(initials, score);
-
-        // Redirect to highscores page
-        window.location.href = "highscores.html";
-    } else {
-        alert("Please enter your initials.");
-    }
-});
