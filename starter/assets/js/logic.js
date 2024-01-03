@@ -13,7 +13,7 @@ let intervalID;
 let questionIndex = 0;
 let score = 0;
 
-// function to start game, display first question + start timer
+// function to start game, display first question + start the timer
 startBtn.addEventListener("click", start);
 
 function start() {
@@ -30,10 +30,12 @@ function start() {
     nextQuestion();
 }
 
+// function to start the timer
 function startTimer() {
     intervalID = setInterval(timeRemaining, 1000);
 }
 
+// function for the timer to count down
 function timeRemaining() {
     timerBtn.textContent = timerCount;
     if (timerCount > 0) {
@@ -43,7 +45,7 @@ function timeRemaining() {
     }
 }
 
-// function to go to next question (or first question?))
+// function to go to next question (or is this for the first question only?))
 function nextQuestion() {
     // Clear existing answer buttons
     questionChoices.innerHTML = "";
@@ -68,7 +70,23 @@ function nextQuestion() {
     }
 }
 
-// validate correct answer and move onto the next question
+function checkAnswer(event) {
+    // get selected answer index from the event
+    let selectedAnswerIndex = event.target.dataset.index; // assuming you set data-index on your buttons
+    // get correct answer index
+    let correctAnswerIndex = questionList[questionIndex].correctAnswer;
+
+    if (selectedAnswerIndex === correctAnswerIndex) {
+        score++;
+    } else {
+        timerCount -= 4;
+    }
+
+    questionIndex++;
+    nextQuestion();
+}
+
+/* validate correct answer and move onto the next question
 function checkAnswer(event) {
     // get selected answer index from the event
     let selectedAnswerIndex = Array.from(event.target.parentNode.children).indexOf(event.target);
@@ -83,8 +101,9 @@ function checkAnswer(event) {
 
     questionIndex++;
     nextQuestion();
-}
+} */
 
+// function to toggle between start and hide end screen pages
 function endQuiz() {
     endScreen.classList.toggle("start");
     endScreen.classList.toggle("hide");
@@ -97,6 +116,7 @@ function endQuiz() {
     document.getElementById("final-score").textContent = score;
 }
 
+// Submit button event listener for initials
 submitBtn.addEventListener("click", function () {
     const initials = document.getElementById("initials").value.trim();
 
