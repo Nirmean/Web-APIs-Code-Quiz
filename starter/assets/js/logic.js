@@ -86,23 +86,6 @@ function checkAnswer(event) {
     nextQuestion();
 }
 
-/* validate correct answer and move onto the next question
-function checkAnswer(event) {
-    // get selected answer index from the event
-    let selectedAnswerIndex = Array.from(event.target.parentNode.children).indexOf(event.target);
-    // get correct answer index
-    let correctAnswerIndex = questionList[questionIndex].correctAnswer;
-
-    if (selectedAnswerIndex === correctAnswerIndex) {
-        score++;
-    } else {
-        timerCount -= 4;
-    }
-
-    questionIndex++;
-    nextQuestion();
-} */
-
 // function to toggle between start and hide end screen pages
 function endQuiz() {
     endScreen.classList.toggle("start");
