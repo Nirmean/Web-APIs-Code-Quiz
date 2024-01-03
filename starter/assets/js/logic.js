@@ -116,6 +116,7 @@ submitBtn.addEventListener("click", function () {
 
 // Submit initials and handle completion
 function addHighscore(initials, score) {
+    // retrieve the values stored in the local storage under highscores and turn it into a JS object
     const highscores = JSON.parse(localStorage.getItem("highscores")) || [];
 
     const newScore = { initials: initials, score: score };
